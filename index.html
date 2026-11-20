@@ -44,7 +44,8 @@ button { font: inherit; border: 0; cursor: pointer; }
 .hidden { display: none !important; }
 
 /* Top bar */
-.bar { display: flex; align-items: center; gap: 12px; min-height: 64px; margin-bottom: 12px; }
+.bar { display: flex; align-items: center; gap: 12px; min-height: 64px; margin: 0 calc(-1 * var(--gutter)) 12px; padding: 8px var(--gutter);
+  position: sticky; top: 0; z-index: 10; background: var(--bg); box-shadow: 0 6px 8px -6px rgba(0,0,0,.15); }
 .title { font-size: 28px; font-weight: 800; letter-spacing: .3px; flex: 1; padding: 8px 0; touch-action: none; }
 .home-btn {
   width: 64px; height: 64px; border-radius: 50%; background: var(--accent); color: #fff;
@@ -151,7 +152,7 @@ button { font: inherit; border: 0; cursor: pointer; }
 <script>
 // Auto-update: GitHub Pages and iPhones cache the app for a while.
 // On open, check whether a newer version is online; if so, refresh once.
-var APP_VERSION = '2026-11-20-9';
+var APP_VERSION = '2026-11-20-10';
 (function () {
   try {
     fetch('version.txt?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.text() : ''; }).then(function (v) {
