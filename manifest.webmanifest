@@ -1,6 +1,6 @@
 {
-  "name": "Kids TV",
-  "short_name": "Kids TV",
+  "name": "Anyra's TV",
+  "short_name": "Anyra's TV",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
