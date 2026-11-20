@@ -57,15 +57,15 @@ button { font: inherit; border: 0; cursor: pointer; }
 .bar-name { font-size: 20px; font-weight: 700; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* Channel grid */
-.channels { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
-@media (min-width: 560px) { .channels { grid-template-columns: repeat(3, 1fr); } }
-@media (min-width: 820px) { .channels { grid-template-columns: repeat(4, 1fr); } }
+.channels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px 12px; }
+@media (min-width: 560px) { .channels { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 820px) { .channels { grid-template-columns: repeat(6, 1fr); } }
 .ch { background: none; color: var(--on-bg); text-align: center; padding: 0; }
 .ch img, .ch .ph {
   width: 100%; aspect-ratio: 1; border-radius: 50%; object-fit: cover; background: var(--bg-2);
-  border: 5px solid var(--accent); box-shadow: 0 6px 0 rgba(0,0,0,.25);
+  border: 4px solid var(--accent); box-shadow: 0 4px 0 rgba(0,0,0,.25);
 }
-.ch span { display: block; margin-top: 8px; font-size: 14px; color: var(--on-bg-soft); line-height: 1.2;
+.ch span { display: block; margin-top: 6px; font-size: 12px; color: var(--on-bg-soft); line-height: 1.2;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ch:active img { transform: scale(.96); }
 
@@ -89,6 +89,15 @@ button { font: inherit; border: 0; cursor: pointer; }
 .again { position: relative; width: 96px; height: 96px; border-radius: 50%; background: var(--accent); color: var(--ink);
   display: grid; place-items: center; box-shadow: 0 6px 0 rgba(0,0,0,.3); }
 .again svg { width: 52px; height: 52px; }
+
+/* Phone turned sideways: video fills the screen */
+@media (orientation: landscape) and (max-height: 500px) {
+  body.playing { padding: 0; }
+  body.playing .bar { position: fixed; top: 8px; left: 8px; z-index: 5; min-height: 0; margin: 0; }
+  body.playing .bar .bar-name { display: none; }
+  body.playing .back-btn, body.playing .home-btn { width: 48px; height: 48px; opacity: .85; }
+  body.playing .player-wrap { width: 100vw; height: 100vh; aspect-ratio: auto; border-radius: 0; }
+}
 
 /* Status */
 .msg { text-align: center; padding: 48px 12px; color: var(--on-bg-soft); font-size: 18px; }
@@ -283,7 +292,8 @@ button { font: inherit; border: 0; cursor: pointer; }
 
   // ---------- Player ----------
   var player = null;
-  function stopPlayer() { if (player && player.destroy) { try { player.destroy(); } catch (e) {} } player = null; }
+  function stopPlayer() { document.body.classList.remove('playing'); stopPlayerOnly(); }
+  function stopPlayerOnly() { if (player && player.destroy) { try { player.destroy(); } catch (e) {} } player = null; }
 
   function viewPlayer(channelId, videoId) {
     var c = findChannel(channelId) || { title: '', thumbnail: '' };
@@ -298,13 +308,14 @@ button { font: inherit; border: 0; cursor: pointer; }
       h('div', { class: 'section-label' }, 'More videos'),
       more);
     fillVideos(more, channelId, videoId);
+    document.body.classList.add('playing');
 
     whenYouTubeReady(function () {
       if (!document.getElementById('yt')) return;
       player = new YT.Player('yt', {
         host: 'https://www.youtube-nocookie.com',
         videoId: DEMO ? 'M7lc1UVf-VE' : videoId,
-        playerVars: { playsinline: 1, rel: 0, iv_load_policy: 3, modestbranding: 1, fs: 1, autoplay: 1, cc_load_policy: 0 },
+        playerVars: { playsinline: 0, rel: 0, iv_load_policy: 3, modestbranding: 1, fs: 1, autoplay: 1, cc_load_policy: 0 },
         events: {
           onStateChange: function (e) {
             // When a video ends, close the player before YouTube shows its own suggestions.
@@ -325,7 +336,7 @@ button { font: inherit; border: 0; cursor: pointer; }
   function viewPlayerReplay(wrap, channelId, videoId) {
     whenYouTubeReady(function () {
       player = new YT.Player('yt', { host: 'https://www.youtube-nocookie.com', videoId: DEMO ? 'M7lc1UVf-VE' : videoId,
-        playerVars: { playsinline: 1, rel: 0, iv_load_policy: 3, modestbranding: 1, fs: 1, autoplay: 1 },
+        playerVars: { playsinline: 0, rel: 0, iv_load_policy: 3, modestbranding: 1, fs: 1, autoplay: 1 },
         events: { onStateChange: function (e) { if (e.data === YT.PlayerState.ENDED) showEnded(wrap, channelId, videoId); } } });
     });
   }
