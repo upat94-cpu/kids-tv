@@ -31,6 +31,8 @@
   font-family: ui-rounded, "SF Pro Rounded", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+/* Stop iPhone double-tap zoom when tapping buttons quickly (e.g. PIN pad) */
+html, body, button, input { touch-action: manipulation; }
 html, body { margin: 0; background: var(--bg); color: var(--on-bg); min-height: 100%; }
 body {
   -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
@@ -148,7 +150,7 @@ button { font: inherit; border: 0; cursor: pointer; }
 <script>
 // Auto-update: GitHub Pages and iPhones cache the app for a while.
 // On open, check whether a newer version is online; if so, refresh once.
-var APP_VERSION = '2026-11-20-6';
+var APP_VERSION = '2026-11-20-7';
 (function () {
   try {
     fetch('version.txt?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.text() : ''; }).then(function (v) {
