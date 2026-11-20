@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Kids TV</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Kids TV">
+<meta name="theme-color" content="#1f2a5a">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<style>
+:root {
+  --bg: #1f2a5a;
+  --bg-2: #283670;
+  --card: #ffffff;
+  --ink: #1b1f33;
+  --ink-soft: #5b6180;
+  --on-bg: #ffffff;
+  --on-bg-soft: #c9d0f2;
+  --accent: #ffcc33;
+  --danger: #e5484d;
+  --ok: #2fae66;
+  --radius: 22px;
+  --gutter: 16px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  font-family: ui-rounded, "SF Pro Rounded", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; background: var(--bg); color: var(--on-bg); min-height: 100%; }
+body {
+  -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
+  overscroll-behavior: none;
+  padding: calc(var(--safe-top) + 8px) var(--gutter) calc(var(--safe-bottom) + 24px);
+}
+img { -webkit-user-drag: none; display: block; }
+button { font: inherit; border: 0; cursor: pointer; }
+.hidden { display: none !important; }
+
+/* Top bar */
+.bar { display: flex; align-items: center; gap: 12px; min-height: 64px; margin-bottom: 12px; }
+.title { font-size: 28px; font-weight: 800; letter-spacing: .3px; flex: 1; padding: 8px 0; touch-action: none; }
+.home-btn {
+  width: 64px; height: 64px; border-radius: 50%; background: var(--accent); color: var(--ink);
+  display: grid; place-items: center; flex: none; box-shadow: 0 4px 0 rgba(0,0,0,.25);
+}
+.home-btn svg { width: 34px; height: 34px; }
+.back-btn { width: 64px; height: 64px; border-radius: 50%; background: #fff; color: var(--ink); display: grid; place-items: center; flex: none; box-shadow: 0 4px 0 rgba(0,0,0,.25); }
+.back-btn svg { width: 34px; height: 34px; }
+.gear-btn { width: 48px; height: 48px; border-radius: 50%; background: var(--bg-2); color: var(--on-bg-soft); display: grid; place-items: center; flex: none; }
+.gear-btn svg { width: 26px; height: 26px; }
+.bar-logo { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; background: var(--bg-2); flex: none; }
+.bar-name { font-size: 20px; font-weight: 700; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Channel grid */
+.channels { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+@media (min-width: 560px) { .channels { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 820px) { .channels { grid-template-columns: repeat(4, 1fr); } }
+.ch { background: none; color: var(--on-bg); text-align: center; padding: 0; }
+.ch img, .ch .ph {
+  width: 100%; aspect-ratio: 1; border-radius: 50%; object-fit: cover; background: var(--bg-2);
+  border: 5px solid var(--accent); box-shadow: 0 6px 0 rgba(0,0,0,.25);
+}
+.ch span { display: block; margin-top: 8px; font-size: 14px; color: var(--on-bg-soft); line-height: 1.2;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ch:active img { transform: scale(.96); }
+
+/* Video grid */
+.videos { display: grid; grid-template-columns: 1fr; gap: 18px; }
+@media (min-width: 560px) { .videos { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 900px) { .videos { grid-template-columns: repeat(3, 1fr); } }
+.vid { background: var(--card); color: var(--ink); border-radius: var(--radius); overflow: hidden; text-align: left; padding: 0;
+  box-shadow: 0 6px 0 rgba(0,0,0,.25); }
+.vid img { width: 100%; aspect-ratio: 16/9; object-fit: cover; background: #dde; }
+.vid span { display: block; padding: 10px 14px 12px; font-size: 14px; color: var(--ink-soft); line-height: 1.25;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vid:active { transform: scale(.98); }
+.section-label { color: var(--on-bg-soft); font-size: 15px; margin: 22px 4px 12px; }
+
+/* Player */
+.player-wrap { position: relative; width: 100%; aspect-ratio: 16/9; border-radius: var(--radius); overflow: hidden; background: #000; }
+.player-wrap iframe, .player-wrap #yt { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.ended { position: absolute; inset: 0; display: grid; place-items: center; background-size: cover; background-position: center; }
+.ended::before { content: ""; position: absolute; inset: 0; background: rgba(15,20,50,.55); }
+.again { position: relative; width: 96px; height: 96px; border-radius: 50%; background: var(--accent); color: var(--ink);
+  display: grid; place-items: center; box-shadow: 0 6px 0 rgba(0,0,0,.3); }
+.again svg { width: 52px; height: 52px; }
+
+/* Status */
+.msg { text-align: center; padding: 48px 12px; color: var(--on-bg-soft); font-size: 18px; }
+.msg .big { font-size: 56px; display: block; margin-bottom: 8px; }
+.msg button { margin-top: 16px; }
+.spinner { width: 56px; height: 56px; margin: 48px auto; border-radius: 50%; border: 7px solid var(--bg-2); border-top-color: var(--accent); animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.demo { background: var(--accent); color: var(--ink); border-radius: 12px; padding: 8px 12px; font-size: 13px; margin-bottom: 12px; }
+
+/* Admin (parents) */
+.admin { -webkit-user-select: text; user-select: text; }
+.panel { background: var(--card); color: var(--ink); border-radius: var(--radius); padding: 18px; margin-bottom: 16px; }
+.panel h2 { margin: 0 0 6px; font-size: 20px; }
+.panel p.help { margin: 0 0 12px; color: var(--ink-soft); font-size: 15px; line-height: 1.4; }
+.row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid #eceef6; }
+.row:first-of-type { border-top: 0; }
+.row img { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; background: #eee; flex: none; }
+.row .name { flex: 1; min-width: 0; font-size: 16px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.row .sub { display: block; font-weight: 400; font-size: 13px; color: var(--ink-soft); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.btn { min-height: 44px; padding: 0 16px; border-radius: 12px; background: #eef0fa; color: var(--ink); font-weight: 700; font-size: 15px; }
+.btn.primary { background: var(--bg); color: #fff; }
+.btn.add { background: var(--ok); color: #fff; }
+.btn.remove { background: #fdecec; color: var(--danger); }
+.btn.remove.confirm { background: var(--danger); color: #fff; }
+.btn.icon { width: 44px; padding: 0; }
+.btn:disabled { opacity: .5; }
+.field { display: flex; gap: 8px; }
+.field input { flex: 1; min-width: 0; min-height: 48px; border-radius: 12px; border: 2px solid #d9ddef; padding: 0 12px; font: inherit; font-size: 16px; color: var(--ink); background: #fff; }
+.note { font-size: 14px; margin-top: 10px; min-height: 1em; }
+.note.err { color: var(--danger); }
+.note.good { color: var(--ok); }
+.or { text-align: center; color: var(--ink-soft); font-size: 14px; margin: 14px 0 10px; }
+
+/* PIN pad */
+.pin { max-width: 340px; margin: 0 auto; text-align: center; }
+.pin h2 { margin: 8px 0 4px; }
+.dots { display: flex; justify-content: center; gap: 14px; margin: 18px 0; }
+.dots i { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--on-bg-soft); }
+.dots i.on { background: var(--accent); border-color: var(--accent); }
+.pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.pad button { height: 68px; border-radius: 18px; background: var(--bg-2); color: #fff; font-size: 26px; font-weight: 700; }
+.pad button.ghost { background: none; font-size: 16px; color: var(--on-bg-soft); }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script src="config.js"></script>
+<script>
+(function () {
+  'use strict';
+  var CFG = window.KIDSTV_CONFIG || {};
+  var API = (CFG.SCRIPT_URL || '').trim();
+  var DEMO = !API;
+  var APP_NAME = CFG.APP_NAME || 'Kids TV';
+  var MAX = 20;
+  var app = document.getElementById('app');
+  document.title = APP_NAME;
+
+  // ---------- tiny helpers ----------
+  function h(tag, attrs, kids) {
+    var el = document.createElement(tag);
+    for (var k in (attrs || {})) {
+      if (k === 'class') el.className = attrs[k];
+      else if (k === 'html') el.innerHTML = attrs[k];
+      else if (k.slice(0, 2) === 'on') el.addEventListener(k.slice(2), attrs[k]);
+      else if (attrs[k] != null) el.setAttribute(k, attrs[k]);
+    }
+    [].concat(kids || []).forEach(function (c) { if (c != null) el.appendChild(typeof c === 'string' ? document.createTextNode(c) : c); });
+    return el;
+  }
+  function store(k, v) { try { if (v === undefined) return JSON.parse(localStorage.getItem(k)); localStorage.setItem(k, JSON.stringify(v)); } catch (e) { return null; } }
+  function session(k, v) { try { if (v === undefined) return sessionStorage.getItem(k); if (v === null) sessionStorage.removeItem(k); else sessionStorage.setItem(k, v); } catch (e) { return null; } }
+  var ICON = {
+    home: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3 2 11.5h3V21h5.5v-6h3v6H19v-9.5h3z"/></svg>',
+    gear: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.4 13a7.5 7.5 0 0 0 0-2l2.1-1.6-2-3.5-2.5 1a7.6 7.6 0 0 0-1.7-1L15 3h-4l-.3 2.9a7.6 7.6 0 0 0-1.7 1l-2.5-1-2 3.5L6.6 11a7.5 7.5 0 0 0 0 2l-2.1 1.6 2 3.5 2.5-1a7.6 7.6 0 0 0 1.7 1L11 21h4l.3-2.9a7.6 7.6 0 0 0 1.7-1l2.5 1 2-3.5zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z" transform="translate(-1 0)"/></svg>',
+    back: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 4 7 12l8.5 8 2-2-6.4-6 6.4-6z"/></svg>',
+    again: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 5V2L7 6.5 12 11V8a5 5 0 1 1-5 5H4.5A7.5 7.5 0 1 0 12 5z"/></svg>',
+    up: '<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 6 5 14h14z"/></svg>',
+    down: '<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 18 5 10h14z"/></svg>'
+  };
+  function friendly(err) {
+    if (!navigator.onLine) return 'No internet right now. Check Wi-Fi and try again.';
+    var m = String((err && err.message) || err || '');
+    if (/Failed to fetch|NetworkError|Load failed/i.test(m)) return 'Could not reach the channel list. Check Wi-Fi and try again.';
+    if (/quota/i.test(m)) return 'YouTube says we have used today\'s free allowance. It resets tomorrow.';
+    return m || 'Something went wrong. Try again.';
+  }
+
+  // ---------- data ----------
+  var api = DEMO ? demoApi() : {
+    get: function (params) {
+      var qs = Object.keys(params || {}).map(function (k) { return k + '=' + encodeURIComponent(params[k]); }).join('&');
+      return fetch(API + (qs ? '?' + qs : ''), { redirect: 'follow' }).then(function (r) { return r.json(); }).then(check);
+    },
+    post: function (body) {
+      return fetch(API, { method: 'POST', redirect: 'follow', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body) })
+        .then(function (r) { return r.json(); }).then(check);
+    }
+  };
+  function check(d) { if (!d || !d.ok) throw new Error((d && d.error) || 'Something went wrong'); return d; }
+
+  var channels = store('kt_channels') || [];
+  var videoCache = {};
+
+  function loadChannels() {
+    return api.get({}).then(function (d) { channels = d.channels || []; store('kt_channels', channels); return channels; });
+  }
+  function loadVideos(id) {
+    var cached = videoCache[id] || store('kt_v_' + id);
+    var fresh = api.get({ action: 'videos', channelId: id }).then(function (d) {
+      videoCache[id] = d.videos || []; store('kt_v_' + id, videoCache[id]); return videoCache[id];
+    });
+    return { cached: cached, fresh: fresh };
+  }
+  function findChannel(id) { return channels.filter(function (c) { return c.id === id; })[0]; }
+
+  // ---------- router ----------
+  function go(hash) { if (location.hash === hash) render(); else location.hash = hash; }
+  window.addEventListener('hashchange', render);
+  window.addEventListener('online', function () { render(); });
+
+  function render() {
+    stopPlayer();
+    window.scrollTo(0, 0);
+    var parts = location.hash.replace(/^#\/?/, '').split('/');
+    if (parts[0] === 'c' && parts[1]) return viewChannel(decodeURIComponent(parts[1]));
+    if (parts[0] === 'v' && parts[1] && parts[2]) return viewPlayer(decodeURIComponent(parts[1]), decodeURIComponent(parts[2]));
+    if (parts[0] === 'admin') return session('kt_pin') ? viewAdmin() : viewPin();
+    return viewHome();
+  }
+
+  function homeButton() { return h('button', { class: 'home-btn', 'aria-label': 'Home', html: ICON.home, onclick: function () { go('#/'); } }); }
+  function demoBanner() { return DEMO ? h('div', { class: 'demo' }, 'Demo mode: pretend channels. Add your Google script URL to config.js to go live.') : null; }
+
+  // ---------- Home ----------
+  function viewHome() {
+    var title = h('div', { class: 'title' }, APP_NAME);
+    var gear = h('button', { class: 'gear-btn', 'aria-label': 'Grown-ups settings', html: ICON.gear, onclick: function () { go('#/admin'); } });
+    var grid = h('div', { class: 'channels' });
+    app.replaceChildren(demoBanner(), h('div', { class: 'bar' }, [title, gear]), grid);
+
+    function draw() {
+      grid.replaceChildren();
+      if (!channels.length) {
+        grid.replaceWith(grid = h('div', { class: 'msg' }, [h('span', { class: 'big' }, '📺'), 'No channels yet. A grown-up can add some.']));
+        return;
+      }
+      channels.forEach(function (c) {
+        grid.appendChild(h('button', { class: 'ch', 'aria-label': c.title, onclick: function () { go('#/c/' + encodeURIComponent(c.id)); } }, [
+          c.thumbnail ? h('img', { src: c.thumbnail, alt: '' }) : h('div', { class: 'ph' }),
+          h('span', {}, c.title)
+        ]));
+      });
+    }
+    if (channels.length) draw(); else grid.appendChild(h('div', { class: 'spinner' }));
+    loadChannels().then(draw).catch(function (e) {
+      if (!channels.length) grid.replaceWith(errorBox(e, render)); });
+  }
+
+  function errorBox(e, retry) {
+    return h('div', { class: 'msg' }, [h('span', { class: 'big' }, '🙈'), friendly(e), h('br'),
+      h('button', { class: 'btn', onclick: retry }, 'Try again')]);
+  }
+
+  // ---------- Channel ----------
+  function viewChannel(id) {
+    var c = findChannel(id) || { id: id, title: '', thumbnail: '' };
+    var grid = h('div', { class: 'videos' });
+    app.replaceChildren(
+      h('div', { class: 'bar' }, [homeButton(), c.thumbnail ? h('img', { class: 'bar-logo', src: c.thumbnail, alt: '' }) : null, h('div', { class: 'bar-name' }, c.title)]),
+      grid);
+    fillVideos(grid, id, null);
+  }
+
+  function fillVideos(grid, channelId, skipId) {
+    var r = loadVideos(channelId);
+    function draw(list) {
+      grid.replaceChildren();
+      list = (list || []).filter(function (v) { return v.id !== skipId; });
+      if (!list.length) { grid.appendChild(h('div', { class: 'msg' }, 'No videos here yet.')); return; }
+      list.forEach(function (v) {
+        grid.appendChild(h('button', { class: 'vid', 'aria-label': v.title, onclick: function () {
+          go('#/v/' + encodeURIComponent(channelId) + '/' + encodeURIComponent(v.id)); } }, [
+          h('img', { src: v.thumbnail, alt: '', loading: 'lazy' }), h('span', {}, v.title)]));
+      });
+    }
+    if (r.cached) draw(r.cached); else grid.appendChild(h('div', { class: 'spinner' }));
+    r.fresh.then(draw).catch(function (e) { if (!r.cached) grid.replaceChildren(errorBox(e, function () { fillVideos(grid, channelId, skipId); })); });
+  }
+
+  // ---------- Player ----------
+  var player = null;
+  function stopPlayer() { if (player && player.destroy) { try { player.destroy(); } catch (e) {} } player = null; }
+
+  function viewPlayer(channelId, videoId) {
+    var c = findChannel(channelId) || { title: '', thumbnail: '' };
+    var wrap = h('div', { class: 'player-wrap' }, [h('div', { id: 'yt' })]);
+    var more = h('div', { class: 'videos' });
+    app.replaceChildren(
+      h('div', { class: 'bar' }, [
+        h('button', { class: 'back-btn', 'aria-label': 'Back', html: ICON.back, onclick: function () { go('#/c/' + encodeURIComponent(channelId)); } }),
+        homeButton(),
+        h('div', { class: 'bar-name' }, c.title)]),
+      wrap,
+      h('div', { class: 'section-label' }, 'More videos'),
+      more);
+    fillVideos(more, channelId, videoId);
+
+    whenYouTubeReady(function () {
+      if (!document.getElementById('yt')) return;
+      player = new YT.Player('yt', {
+        host: 'https://www.youtube-nocookie.com',
+        videoId: DEMO ? 'M7lc1UVf-VE' : videoId,
+        playerVars: { playsinline: 1, rel: 0, iv_load_policy: 3, modestbranding: 1, fs: 1, autoplay: 1, cc_load_policy: 0 },
+        events: {
+          onStateChange: function (e) {
+            // When a video ends, close the player before YouTube shows its own suggestions.
+            if (e.data === YT.PlayerState.ENDED) showEnded(wrap, channelId, videoId);
+          }
+        }
+      });
+    });
+  }
+
+  function showEnded(wrap, channelId, videoId) {
+    stopPlayer();
+    var thumb = 'https://i.ytimg.com/vi/' + videoId + '/hqdefault.jpg';
+    wrap.replaceChildren(h('div', { class: 'ended', style: 'background-image:url(' + thumb + ')' }, [
+      h('button', { class: 'again', 'aria-label': 'Watch again', html: ICON.again, onclick: function () {
+        wrap.replaceChildren(h('div', { id: 'yt' })); viewPlayerReplay(wrap, channelId, videoId); } })]));
+  }
+  function viewPlayerReplay(wrap, channelId, videoId) {
+    whenYouTubeReady(function () {
+      player = new YT.Player('yt', { host: 'https://www.youtube-nocookie.com', videoId: DEMO ? 'M7lc1UVf-VE' : videoId,
+        playerVars: { playsinline: 1, rel: 0, iv_load_policy: 3, modestbranding: 1, fs: 1, autoplay: 1 },
+        events: { onStateChange: function (e) { if (e.data === YT.PlayerState.ENDED) showEnded(wrap, channelId, videoId); } } });
+    });
+  }
+
+  var ytQueue = [];
+  function whenYouTubeReady(fn) {
+    if (window.YT && window.YT.Player) return fn();
+    ytQueue.push(fn);
+    if (!document.getElementById('yt-api')) {
+      window.onYouTubeIframeAPIReady = function () { var q = ytQueue; ytQueue = []; q.forEach(function (f) { f(); }); };
+      document.head.appendChild(h('script', { id: 'yt-api', src: 'https://www.youtube.com/iframe_api' }));
+    }
+  }
+
+  // ---------- PIN ----------
+  function viewPin() {
+    var entered = '';
+    var dots = h('div', { class: 'dots' });
+    var note = h('div', { class: 'note err', style: 'text-align:center' });
+    function drawDots() { dots.replaceChildren(); for (var i = 0; i < Math.max(4, entered.length); i++) dots.appendChild(h('i', { class: i < entered.length ? 'on' : '' })); }
+    function press(d) {
+      note.textContent = '';
+      if (d === 'del') entered = entered.slice(0, -1); else if (entered.length < 8) entered += d;
+      drawDots();
+    }
+    function submit() {
+      if (!entered) return;
+      note.textContent = 'Checking…'; note.className = 'note';
+      api.post({ action: 'checkPin', pin: entered }).then(function () { session('kt_pin', entered); viewAdmin(); })
+        .catch(function (e) { entered = ''; drawDots(); note.className = 'note err'; note.textContent = /PIN/.test(e.message) ? 'That PIN is not right. Try again.' : friendly(e); });
+    }
+    var pad = h('div', { class: 'pad' });
+    ['1','2','3','4','5','6','7','8','9'].forEach(function (d) { pad.appendChild(h('button', { onclick: function () { press(d); } }, d)); });
+    pad.appendChild(h('button', { class: 'ghost', onclick: function () { press('del'); } }, 'Delete'));
+    pad.appendChild(h('button', { onclick: function () { press('0'); } }, '0'));
+    pad.appendChild(h('button', { class: 'ghost', style: 'color:var(--accent);font-weight:800', onclick: submit }, 'OK'));
+    drawDots();
+    app.replaceChildren(h('div', { class: 'bar' }, [homeButton()]),
+      h('div', { class: 'pin' }, [h('h2', {}, 'Grown-ups only'), h('div', { style: 'color:var(--on-bg-soft)' }, 'Enter the parent PIN'), dots, pad, note,
+        DEMO ? h('div', { class: 'note', style: 'color:var(--on-bg-soft)' }, 'Demo PIN: 1234') : null]));
+  }
+
+  // ---------- Admin ----------
+  function viewAdmin() {
+    var pin = session('kt_pin');
+    var listPanel = h('div', { class: 'panel' });
+    var q = h('input', { type: 'search', placeholder: 'Channel name, e.g. Ms Rachel', enterkeyhint: 'search', autocomplete: 'off' });
+    var results = h('div');
+    var searchNote = h('div', { class: 'note' });
+    var link = h('input', { type: 'url', placeholder: 'Paste a YouTube channel link', autocomplete: 'off', autocapitalize: 'off' });
+    var linkNote = h('div', { class: 'note' });
+
+    function setNote(el, text, kind) { el.textContent = text || ''; el.className = 'note' + (kind ? ' ' + kind : ''); }
+    function fail(e) {
+      if (/PIN/.test(e.message)) { session('kt_pin', null); viewPin(); return null; }
+      return friendly(e);
+    }
+
+    function drawList() {
+      var full = channels.length >= MAX;
+      listPanel.replaceChildren(
+        h('h2', {}, 'Channels (' + channels.length + ' of ' + MAX + ')'),
+        h('p', { class: 'help' }, full ? 'The list is full. Remove one to add another.' : 'Every phone with this app sees this same list.'));
+      if (!channels.length) listPanel.appendChild(h('p', { class: 'help' }, 'No channels yet. Add one below.'));
+      channels.forEach(function (c, i) {
+        var rm = h('button', { class: 'btn remove' }, 'Remove');
+        rm.addEventListener('click', function () {
+          if (!rm.classList.contains('confirm')) { rm.classList.add('confirm'); rm.textContent = 'Tap to confirm'; setTimeout(function () { rm.classList.remove('confirm'); rm.textContent = 'Remove'; }, 4000); return; }
+          rm.disabled = true; rm.textContent = 'Removing…';
+          api.post({ action: 'remove', pin: pin, channelId: c.id }).then(update).catch(function (e) { var m = fail(e); if (m) { rm.disabled = false; rm.textContent = 'Remove'; alertInline(m); } });
+        });
+        listPanel.appendChild(h('div', { class: 'row' }, [
+          h('img', { src: c.thumbnail, alt: '' }),
+          h('div', { class: 'name' }, c.title),
+          rm]));
+      });
+    }
+    var listNote = h('div', { class: 'note err' });
+    function alertInline(m) { setNote(listNote, m, 'err'); }
+    function update(d) { channels = d.channels || []; store('kt_channels', channels); drawList(); }
+
+    function add(input, noteEl, btn) {
+      if (channels.length >= MAX) { setNote(noteEl, 'The list is full. Remove a channel first.', 'err'); return; }
+      if (btn) { btn.disabled = true; btn.textContent = 'Adding…'; }
+      setNote(noteEl, '');
+      return api.post({ action: 'add', pin: pin, input: input }).then(function (d) {
+        update(d); setNote(noteEl, 'Added ' + d.channel.title + '. It shows on every phone next time the app opens.', 'good');
+        if (btn) btn.textContent = 'Added';
+      }).catch(function (e) { var m = fail(e); if (m) setNote(noteEl, m, 'err'); if (btn) { btn.disabled = false; btn.textContent = 'Add'; } });
+    }
+
+    function search() {
+      var text = q.value.trim();
+      if (!text) { setNote(searchNote, 'Type a channel name first.', 'err'); return; }
+      setNote(searchNote, 'Searching…'); results.replaceChildren();
+      api.post({ action: 'search', pin: pin, query: text }).then(function (d) {
+        setNote(searchNote, d.results.length ? 'Tap Add next to the right one. Check the picture matches.' : 'No channels found. Try a shorter name.');
+        d.results.forEach(function (r) {
+          var already = !!findChannel(r.id);
+          var btn = h('button', { class: 'btn add', disabled: already ? '' : null }, already ? 'On list' : 'Add');
+          btn.addEventListener('click', function () { add(r.id, searchNote, btn); });
+          results.appendChild(h('div', { class: 'row' }, [h('img', { src: r.thumbnail, alt: '' }),
+            h('div', { class: 'name' }, [r.title, h('span', { class: 'sub' }, r.description || '')]), btn]));
+        });
+      }).catch(function (e) { var m = fail(e); if (m) setNote(searchNote, m, 'err'); });
+    }
+    q.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); q.blur(); search(); } });
+
+    app.replaceChildren(
+      h('div', { class: 'bar' }, [homeButton(), h('div', { class: 'title' }, 'Grown-ups')]),
+      h('div', { class: 'admin' }, [
+        demoBanner(),
+        h('div', { class: 'panel' }, [
+          h('h2', {}, 'Add a channel'),
+          h('p', { class: 'help' }, 'Search by name, then tap Add.'),
+          h('div', { class: 'field' }, [q, h('button', { class: 'btn primary', onclick: search }, 'Search')]),
+          searchNote, results,
+          h('div', { class: 'or' }, 'or'),
+          h('p', { class: 'help' }, 'In the YouTube app, open the channel, tap Share, then Copy link. Paste it here.'),
+          h('div', { class: 'field' }, [link, h('button', { class: 'btn add', onclick: function (e) { add(link.value, linkNote, null); } }, 'Add')]),
+          linkNote]),
+        listPanel, listNote,
+        h('button', { class: 'btn', style: 'width:100%', onclick: function () { session('kt_pin', null); go('#/'); } }, 'Done, lock grown-ups area')]));
+    drawList();
+    loadChannels().then(drawList).catch(function () {});
+  }
+
+  // ---------- Demo backend (no Google script yet) ----------
+  function demoApi() {
+    var palette = ['#ff8a65', '#4fc3f7', '#aed581', '#ba68c8', '#ffd54f', '#f06292', '#4db6ac', '#9575cd'];
+    function art(label, color, w, hgt) {
+      var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + hgt + '"><rect width="100%" height="100%" fill="' + color + '"/>' +
+        '<text x="50%" y="54%" font-family="Arial" font-weight="700" font-size="' + Math.round(hgt / 4) + '" fill="#fff" text-anchor="middle" dominant-baseline="middle">' + label + '</text></svg>';
+      return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    }
+    var names = ['Sunny Songs', 'Story Time', 'Little Builders', 'Animal Friends', 'Bedtime Books', 'Counting Club'];
+    var pool = names.concat(['Bubble Bus', 'Puppet Pals']);
+    function ch(n, i) { return { id: 'UCdemo' + i, title: n, thumbnail: art(n.split(' ').map(function (w) { return w[0]; }).join(''), palette[i % palette.length], 200, 200) }; }
+    var list = store('kt_demo') || names.map(ch);
+    function save() { store('kt_demo', list); }
+    function wait(v) { return new Promise(function (res) { setTimeout(function () { res(v); }, 250); }); }
+    return {
+      get: function (p) {
+        if (p.action === 'videos') {
+          var c = list.filter(function (x) { return x.id === p.channelId; })[0];
+          var i = list.indexOf(c);
+          var vids = [];
+          for (var k = 1; k <= 8; k++) vids.push({ id: 'demo' + k, title: (c ? c.title : 'Video') + ' episode ' + k, thumbnail: art('Ep ' + k, palette[(i + k) % palette.length], 320, 180) });
+          return wait({ ok: true, videos: vids });
+        }
+        return wait({ ok: true, channels: list.slice() });
+      },
+      post: function (b) {
+        if (String(b.pin) !== '1234') return wait(null).then(function () { throw new Error('Wrong PIN'); });
+        if (b.action === 'checkPin') return wait({ ok: true });
+        if (b.action === 'search') {
+          var res = pool.filter(function (n) { return n.toLowerCase().indexOf(String(b.query).toLowerCase().split(' ')[0]) >= 0; });
+          if (!res.length) res = pool.slice(6);
+          return wait({ ok: true, results: res.map(function (n) { var c = ch(n, pool.indexOf(n)); c.description = 'Demo channel'; return c; }) });
+        }
+        if (b.action === 'add') {
+          var n = pool.filter(function (x, i) { return 'UCdemo' + i === b.input; })[0] || 'New Channel';
+          var c = ch(n, pool.indexOf(n) >= 0 ? pool.indexOf(n) : list.length + 10);
+          if (list.length >= MAX) return wait(null).then(function () { throw new Error('The list is full.'); });
+          if (list.some(function (x) { return x.id === c.id; })) return wait(null).then(function () { throw new Error(c.title + ' is already on the list.'); });
+          list.push(c); save(); return wait({ ok: true, channel: c, channels: list.slice() });
+        }
+        if (b.action === 'remove') { list = list.filter(function (x) { return x.id !== b.channelId; }); save(); return wait({ ok: true, channels: list.slice() }); }
+        if (b.action === 'move') {
+          var i = list.findIndex(function (x) { return x.id === b.channelId; }), j = b.direction === 'up' ? i - 1 : i + 1;
+          if (j >= 0 && j < list.length) { var t = list[i]; list[i] = list[j]; list[j] = t; save(); }
+          return wait({ ok: true, channels: list.slice() });
+        }
+        return wait(null).then(function () { throw new Error('Unknown action'); });
+      }
+    };
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>
