@@ -8,14 +8,14 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Anyra&#39;s TV">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#e9ebef">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" href="icon-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <style>
 :root {
-  --bg: #ffffff;
-  --bg-2: #f2f2f2;
+  --bg: #e9ebef;
+  --bg-2: #ffffff;
   --card: #ffffff;
   --ink: #0f0f0f;
   --ink-soft: #606060;
@@ -53,7 +53,7 @@ button { font: inherit; border: 0; cursor: pointer; }
 .home-btn svg { width: 34px; height: 34px; }
 .back-btn { width: 64px; height: 64px; border-radius: 50%; background: var(--bg-2); color: var(--ink); display: grid; place-items: center; flex: none; box-shadow: 0 2px 6px rgba(0,0,0,.15); }
 .back-btn svg { width: 34px; height: 34px; }
-.gear-btn { width: 48px; height: 48px; border-radius: 50%; background: var(--bg-2); color: var(--on-bg-soft); display: grid; place-items: center; flex: none; }
+.gear-btn { width: 48px; height: 48px; border-radius: 50%; background: #fff; color: var(--on-bg-soft); box-shadow: 0 2px 6px rgba(0,0,0,.12); display: grid; place-items: center; flex: none; }
 .gear-btn svg { width: 26px; height: 26px; }
 .bar-logo { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; background: var(--bg-2); flex: none; }
 .bar-name { font-size: 20px; font-weight: 700; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -62,12 +62,13 @@ button { font: inherit; border: 0; cursor: pointer; }
 .channels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 12px; }
 @media (min-width: 560px) { .channels { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 @media (min-width: 820px) { .channels { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
-.ch { background: none; color: var(--on-bg); text-align: center; padding: 0; }
+.ch { background: #fff; color: var(--on-bg); text-align: center; padding: 14px 8px 10px; border-radius: 22px; box-shadow: 0 3px 0 #c9ccd3, 0 4px 12px rgba(0,0,0,.08); border: 2px solid #fff; }
+.ch:active { transform: translateY(2px); box-shadow: 0 1px 0 #c9ccd3; }
 .ch img, .ch .ph {
   width: min(100%, 120px); margin: 0 auto; aspect-ratio: 1; border-radius: 50%; object-fit: cover; background: var(--bg-2);
-  border: 3px solid #e5e5e5; box-shadow: 0 2px 6px rgba(0,0,0,.15);
+  border: 3px solid #ff0000; box-shadow: 0 2px 6px rgba(0,0,0,.15);
 }
-.ch span { display: block; margin-top: 6px; font-size: 13px; color: var(--on-bg-soft); line-height: 1.2;
+.ch span { display: block; margin-top: 8px; font-size: 13px; font-weight: 600; color: var(--on-bg-soft); line-height: 1.2;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ch:active img { transform: scale(.96); }
 
@@ -76,7 +77,7 @@ button { font: inherit; border: 0; cursor: pointer; }
 @media (min-width: 560px) { .videos { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 900px) { .videos { grid-template-columns: repeat(3, 1fr); } }
 .vid { background: var(--card); color: var(--ink); border-radius: 14px; overflow: hidden; text-align: left; padding: 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+  box-shadow: 0 3px 0 #c9ccd3, 0 4px 12px rgba(0,0,0,.08); }
 .vid img { width: 100%; aspect-ratio: 16/9; object-fit: cover; background: #dde; }
 .vid span { display: block; padding: 10px 14px 12px; font-size: 14px; color: var(--ink-soft); line-height: 1.25;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -150,7 +151,7 @@ button { font: inherit; border: 0; cursor: pointer; }
 <script>
 // Auto-update: GitHub Pages and iPhones cache the app for a while.
 // On open, check whether a newer version is online; if so, refresh once.
-var APP_VERSION = '2026-11-20-7';
+var APP_VERSION = '2026-11-20-8';
 (function () {
   try {
     fetch('version.txt?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.text() : ''; }).then(function (v) {
