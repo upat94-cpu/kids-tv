@@ -160,6 +160,7 @@ button { font: inherit; border: 0; cursor: pointer; }
     [].concat(kids || []).forEach(function (c) { if (c != null) el.appendChild(typeof c === 'string' ? document.createTextNode(c) : c); });
     return el;
   }
+  function setView() { app.replaceChildren.apply(app, [].slice.call(arguments).filter(function (x) { return x != null; })); }
   function store(k, v) { try { if (v === undefined) return JSON.parse(localStorage.getItem(k)); localStorage.setItem(k, JSON.stringify(v)); } catch (e) { return null; } }
   function session(k, v) { try { if (v === undefined) return sessionStorage.getItem(k); if (v === null) sessionStorage.removeItem(k); else sessionStorage.setItem(k, v); } catch (e) { return null; } }
   var ICON = {
@@ -229,7 +230,7 @@ button { font: inherit; border: 0; cursor: pointer; }
     var title = h('div', { class: 'title' }, APP_NAME);
     var gear = h('button', { class: 'gear-btn', 'aria-label': 'Grown-ups settings', html: ICON.gear, onclick: function () { go('#/admin'); } });
     var grid = h('div', { class: 'channels' });
-    app.replaceChildren(demoBanner(), h('div', { class: 'bar' }, [title, gear]), grid);
+    setView(demoBanner(), h('div', { class: 'bar' }, [title, gear]), grid);
 
     function draw() {
       grid.replaceChildren();
@@ -258,7 +259,7 @@ button { font: inherit; border: 0; cursor: pointer; }
   function viewChannel(id) {
     var c = findChannel(id) || { id: id, title: '', thumbnail: '' };
     var grid = h('div', { class: 'videos' });
-    app.replaceChildren(
+    setView(
       h('div', { class: 'bar' }, [homeButton(), c.thumbnail ? h('img', { class: 'bar-logo', src: c.thumbnail, alt: '' }) : null, h('div', { class: 'bar-name' }, c.title)]),
       grid);
     fillVideos(grid, id, null);
@@ -288,7 +289,7 @@ button { font: inherit; border: 0; cursor: pointer; }
     var c = findChannel(channelId) || { title: '', thumbnail: '' };
     var wrap = h('div', { class: 'player-wrap' }, [h('div', { id: 'yt' })]);
     var more = h('div', { class: 'videos' });
-    app.replaceChildren(
+    setView(
       h('div', { class: 'bar' }, [
         h('button', { class: 'back-btn', 'aria-label': 'Back', html: ICON.back, onclick: function () { go('#/c/' + encodeURIComponent(channelId)); } }),
         homeButton(),
@@ -362,7 +363,7 @@ button { font: inherit; border: 0; cursor: pointer; }
     pad.appendChild(h('button', { onclick: function () { press('0'); } }, '0'));
     pad.appendChild(h('button', { class: 'ghost', style: 'color:var(--accent);font-weight:800', onclick: submit }, 'OK'));
     drawDots();
-    app.replaceChildren(h('div', { class: 'bar' }, [homeButton()]),
+    setView(h('div', { class: 'bar' }, [homeButton()]),
       h('div', { class: 'pin' }, [h('h2', {}, 'Grown-ups only'), h('div', { style: 'color:var(--on-bg-soft)' }, 'Enter the parent PIN'), dots, pad, note,
         DEMO ? h('div', { class: 'note', style: 'color:var(--on-bg-soft)' }, 'Demo PIN: 1234') : null]));
   }
@@ -433,7 +434,7 @@ button { font: inherit; border: 0; cursor: pointer; }
     }
     q.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); q.blur(); search(); } });
 
-    app.replaceChildren(
+    setView(
       h('div', { class: 'bar' }, [homeButton(), h('div', { class: 'title' }, 'Grown-ups')]),
       h('div', { class: 'admin' }, [
         demoBanner(),
