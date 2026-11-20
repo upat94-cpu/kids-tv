@@ -82,7 +82,7 @@ button { font: inherit; border: 0; cursor: pointer; }
 .vid span { display: block; padding: 10px 14px 12px; font-size: 14px; color: var(--ink-soft); line-height: 1.25;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .vid:active { transform: scale(.98); }
-.section-label { color: var(--on-bg-soft); font-size: 15px; margin: 22px 4px 12px; }
+.section-label { color: var(--ink); font-size: 22px; font-weight: 800; margin: 32px 4px 16px; padding-top: 4px; }
 
 /* Player */
 .player-wrap { position: relative; width: 100%; aspect-ratio: 16/9; border-radius: var(--radius); overflow: hidden; background: #000; }
@@ -151,7 +151,7 @@ button { font: inherit; border: 0; cursor: pointer; }
 <script>
 // Auto-update: GitHub Pages and iPhones cache the app for a while.
 // On open, check whether a newer version is online; if so, refresh once.
-var APP_VERSION = '2026-11-20-8';
+var APP_VERSION = '2026-11-20-9';
 (function () {
   try {
     fetch('version.txt?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.text() : ''; }).then(function (v) {
