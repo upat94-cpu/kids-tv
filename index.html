@@ -57,15 +57,15 @@ button { font: inherit; border: 0; cursor: pointer; }
 .bar-name { font-size: 20px; font-weight: 700; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* Channel grid */
-.channels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px 12px; }
-@media (min-width: 560px) { .channels { grid-template-columns: repeat(4, 1fr); } }
-@media (min-width: 820px) { .channels { grid-template-columns: repeat(6, 1fr); } }
+.channels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 12px; }
+@media (min-width: 560px) { .channels { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (min-width: 820px) { .channels { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
 .ch { background: none; color: var(--on-bg); text-align: center; padding: 0; }
 .ch img, .ch .ph {
-  width: 100%; aspect-ratio: 1; border-radius: 50%; object-fit: cover; background: var(--bg-2);
+  width: min(100%, 120px); margin: 0 auto; aspect-ratio: 1; border-radius: 50%; object-fit: cover; background: var(--bg-2);
   border: 3px solid #e5e5e5; box-shadow: 0 2px 6px rgba(0,0,0,.15);
 }
-.ch span { display: block; margin-top: 6px; font-size: 12px; color: var(--on-bg-soft); line-height: 1.2;
+.ch span { display: block; margin-top: 6px; font-size: 13px; color: var(--on-bg-soft); line-height: 1.2;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ch:active img { transform: scale(.96); }
 
