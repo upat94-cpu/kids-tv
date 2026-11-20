@@ -6,22 +6,22 @@
 <title>Kids TV</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Kids TV">
-<meta name="theme-color" content="#1f2a5a">
+<meta name="theme-color" content="#ffffff">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" href="icon-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <style>
 :root {
-  --bg: #1f2a5a;
-  --bg-2: #283670;
+  --bg: #ffffff;
+  --bg-2: #f2f2f2;
   --card: #ffffff;
-  --ink: #1b1f33;
-  --ink-soft: #5b6180;
-  --on-bg: #ffffff;
-  --on-bg-soft: #c9d0f2;
-  --accent: #ffcc33;
+  --ink: #0f0f0f;
+  --ink-soft: #606060;
+  --on-bg: #0f0f0f;
+  --on-bg-soft: #606060;
+  --accent: #ff0000;
   --danger: #e5484d;
   --ok: #2fae66;
   --radius: 22px;
@@ -45,11 +45,11 @@ button { font: inherit; border: 0; cursor: pointer; }
 .bar { display: flex; align-items: center; gap: 12px; min-height: 64px; margin-bottom: 12px; }
 .title { font-size: 28px; font-weight: 800; letter-spacing: .3px; flex: 1; padding: 8px 0; touch-action: none; }
 .home-btn {
-  width: 64px; height: 64px; border-radius: 50%; background: var(--accent); color: var(--ink);
-  display: grid; place-items: center; flex: none; box-shadow: 0 4px 0 rgba(0,0,0,.25);
+  width: 64px; height: 64px; border-radius: 50%; background: var(--accent); color: #fff;
+  display: grid; place-items: center; flex: none; box-shadow: 0 2px 6px rgba(0,0,0,.15);
 }
 .home-btn svg { width: 34px; height: 34px; }
-.back-btn { width: 64px; height: 64px; border-radius: 50%; background: #fff; color: var(--ink); display: grid; place-items: center; flex: none; box-shadow: 0 4px 0 rgba(0,0,0,.25); }
+.back-btn { width: 64px; height: 64px; border-radius: 50%; background: var(--bg-2); color: var(--ink); display: grid; place-items: center; flex: none; box-shadow: 0 2px 6px rgba(0,0,0,.15); }
 .back-btn svg { width: 34px; height: 34px; }
 .gear-btn { width: 48px; height: 48px; border-radius: 50%; background: var(--bg-2); color: var(--on-bg-soft); display: grid; place-items: center; flex: none; }
 .gear-btn svg { width: 26px; height: 26px; }
@@ -63,7 +63,7 @@ button { font: inherit; border: 0; cursor: pointer; }
 .ch { background: none; color: var(--on-bg); text-align: center; padding: 0; }
 .ch img, .ch .ph {
   width: 100%; aspect-ratio: 1; border-radius: 50%; object-fit: cover; background: var(--bg-2);
-  border: 4px solid var(--accent); box-shadow: 0 4px 0 rgba(0,0,0,.25);
+  border: 3px solid #e5e5e5; box-shadow: 0 2px 6px rgba(0,0,0,.15);
 }
 .ch span { display: block; margin-top: 6px; font-size: 12px; color: var(--on-bg-soft); line-height: 1.2;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -73,8 +73,8 @@ button { font: inherit; border: 0; cursor: pointer; }
 .videos { display: grid; grid-template-columns: 1fr; gap: 18px; }
 @media (min-width: 560px) { .videos { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 900px) { .videos { grid-template-columns: repeat(3, 1fr); } }
-.vid { background: var(--card); color: var(--ink); border-radius: var(--radius); overflow: hidden; text-align: left; padding: 0;
-  box-shadow: 0 6px 0 rgba(0,0,0,.25); }
+.vid { background: var(--card); color: var(--ink); border-radius: 14px; overflow: hidden; text-align: left; padding: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,.12); }
 .vid img { width: 100%; aspect-ratio: 16/9; object-fit: cover; background: #dde; }
 .vid span { display: block; padding: 10px 14px 12px; font-size: 14px; color: var(--ink-soft); line-height: 1.25;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -86,7 +86,7 @@ button { font: inherit; border: 0; cursor: pointer; }
 .player-wrap iframe, .player-wrap #yt { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .ended { position: absolute; inset: 0; display: grid; place-items: center; background-size: cover; background-position: center; }
 .ended::before { content: ""; position: absolute; inset: 0; background: rgba(15,20,50,.55); }
-.again { position: relative; width: 96px; height: 96px; border-radius: 50%; background: var(--accent); color: var(--ink);
+.again { position: relative; width: 96px; height: 96px; border-radius: 50%; background: var(--accent); color: #fff;
   display: grid; place-items: center; box-shadow: 0 6px 0 rgba(0,0,0,.3); }
 .again svg { width: 52px; height: 52px; }
 
@@ -103,13 +103,13 @@ button { font: inherit; border: 0; cursor: pointer; }
 .msg { text-align: center; padding: 48px 12px; color: var(--on-bg-soft); font-size: 18px; }
 .msg .big { font-size: 56px; display: block; margin-bottom: 8px; }
 .msg button { margin-top: 16px; }
-.spinner { width: 56px; height: 56px; margin: 48px auto; border-radius: 50%; border: 7px solid var(--bg-2); border-top-color: var(--accent); animation: spin 1s linear infinite; }
+.spinner { width: 56px; height: 56px; margin: 48px auto; border-radius: 50%; border: 7px solid #e5e5e5; border-top-color: var(--accent); animation: spin 1s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
-.demo { background: var(--accent); color: var(--ink); border-radius: 12px; padding: 8px 12px; font-size: 13px; margin-bottom: 12px; }
+.demo { background: #fff3cd; color: var(--ink); border-radius: 12px; padding: 8px 12px; font-size: 13px; margin-bottom: 12px; }
 
 /* Admin (parents) */
 .admin { -webkit-user-select: text; user-select: text; }
-.panel { background: var(--card); color: var(--ink); border-radius: var(--radius); padding: 18px; margin-bottom: 16px; }
+.panel { background: var(--card); color: var(--ink); border: 1px solid #e5e5e5; border-radius: var(--radius); padding: 18px; margin-bottom: 16px; }
 .panel h2 { margin: 0 0 6px; font-size: 20px; }
 .panel p.help { margin: 0 0 12px; color: var(--ink-soft); font-size: 15px; line-height: 1.4; }
 .row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid #eceef6; }
@@ -118,7 +118,7 @@ button { font: inherit; border: 0; cursor: pointer; }
 .row .name { flex: 1; min-width: 0; font-size: 16px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .row .sub { display: block; font-weight: 400; font-size: 13px; color: var(--ink-soft); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .btn { min-height: 44px; padding: 0 16px; border-radius: 12px; background: #eef0fa; color: var(--ink); font-weight: 700; font-size: 15px; }
-.btn.primary { background: var(--bg); color: #fff; }
+.btn.primary { background: var(--ink); color: #fff; }
 .btn.add { background: var(--ok); color: #fff; }
 .btn.remove { background: #fdecec; color: var(--danger); }
 .btn.remove.confirm { background: var(--danger); color: #fff; }
@@ -138,7 +138,7 @@ button { font: inherit; border: 0; cursor: pointer; }
 .dots i { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--on-bg-soft); }
 .dots i.on { background: var(--accent); border-color: var(--accent); }
 .pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-.pad button { height: 68px; border-radius: 18px; background: var(--bg-2); color: #fff; font-size: 26px; font-weight: 700; }
+.pad button { height: 68px; border-radius: 18px; background: var(--bg-2); color: var(--ink); font-size: 26px; font-weight: 700; }
 .pad button.ghost { background: none; font-size: 16px; color: var(--on-bg-soft); }
 </style>
 </head>
@@ -372,7 +372,7 @@ button { font: inherit; border: 0; cursor: pointer; }
     ['1','2','3','4','5','6','7','8','9'].forEach(function (d) { pad.appendChild(h('button', { onclick: function () { press(d); } }, d)); });
     pad.appendChild(h('button', { class: 'ghost', onclick: function () { press('del'); } }, 'Delete'));
     pad.appendChild(h('button', { onclick: function () { press('0'); } }, '0'));
-    pad.appendChild(h('button', { class: 'ghost', style: 'color:var(--accent);font-weight:800', onclick: submit }, 'OK'));
+    pad.appendChild(h('button', { style: 'background:var(--accent);color:#fff;font-weight:800', onclick: submit }, 'OK'));
     drawDots();
     setView(h('div', { class: 'bar' }, [homeButton()]),
       h('div', { class: 'pin' }, [h('h2', {}, 'Grown-ups only'), h('div', { style: 'color:var(--on-bg-soft)' }, 'Enter the parent PIN'), dots, pad, note,
