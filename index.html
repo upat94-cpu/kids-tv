@@ -145,6 +145,24 @@ button { font: inherit; border: 0; cursor: pointer; }
 <body>
 <div id="app"></div>
 
+<script>
+// Auto-update: GitHub Pages and iPhones cache the app for a while.
+// On open, check whether a newer version is online; if so, refresh once.
+var APP_VERSION = '2026-11-20-5';
+(function () {
+  try {
+    fetch('version.txt?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.text() : ''; }).then(function (v) {
+      v = (v || '').trim();
+      if (!v || v === APP_VERSION) return;
+      var key = 'kt_reloaded_' + v;
+      if (sessionStorage.getItem(key)) return;
+      sessionStorage.setItem(key, '1');
+      Promise.all([fetch('./', { cache: 'reload' }), fetch('index.html', { cache: 'reload' }), fetch('config.js', { cache: 'reload' })])
+        .catch(function () {}).then(function () { location.reload(); });
+    }).catch(function () {});
+  } catch (e) {}
+})();
+</script>
 <script src="config.js"></script>
 <script>
 (function () {
